@@ -6,9 +6,9 @@ class JsonFileUserEventStoreRepo {
     constructor(filePath) {
         this.filePath = filePath;
     }
-    AddEvent(event) {
+    AddEvents(events) {
         let allUserEvents = this.GetAllEvents();
-        allUserEvents.push(event);
+        allUserEvents = allUserEvents.concat(events);
         fs_1.writeFileSync(this.filePath, JSON.stringify(allUserEvents));
     }
     GetEventsForUser(userID) {

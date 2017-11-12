@@ -10,9 +10,9 @@ export class JsonFileUserEventStoreRepo implements UserEventStoreRepo {
         this.filePath = filePath
     }
 
-    AddEvent(event: UserEvent): void {
+    AddEvents(events: UserEvent[]): void {
         let allUserEvents = this.GetAllEvents()
-        allUserEvents.push(event)
+        allUserEvents = allUserEvents.concat(events)
         writeFileSync(this.filePath, JSON.stringify(allUserEvents))
     }   
 

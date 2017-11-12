@@ -10,6 +10,14 @@ export class UserEventStore {
         this.eventStoreRepo = eventStoreRepo
     }
 
+    GetUserByID(userID: string): User | undefined {
+        let events = this.eventStoreRepo.GetEventsForUser(userID)
+        return this.Replay(events).get(userID)
+    }
+
+    AddEvents(events: UserEvent[]): void {
+        this.eventStoreRepo.AddEvents(events)
+    }
 
     Decide(cmd: UserCommand): UserEvent[] {
         if (cmd.Type === UserCommandType.AddUser) {
@@ -58,6 +66,7 @@ export class UserEventStore {
 }
 
 export interface UserEventStoreRepo {
+    AddEvents(events: UserEvent[]): void
     GetEventsForUser(userID: string): UserEvent[];
     GetAllEvents(): UserEvent[];
 }

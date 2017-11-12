@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
-var EventType;
-(function (EventType) {
-    EventType[EventType["UserAdded"] = 0] = "UserAdded";
-    EventType[EventType["EmailUpdated"] = 1] = "EmailUpdated";
-})(EventType = exports.EventType || (exports.EventType = {}));
+var UserEventType;
+(function (UserEventType) {
+    UserEventType[UserEventType["UserAdded"] = 0] = "UserAdded";
+    UserEventType[UserEventType["EmailUpdated"] = 1] = "EmailUpdated";
+})(UserEventType = exports.UserEventType || (exports.UserEventType = {}));
 class UserEvent {
     constructor() {
         this.EventID = uuid_1.v4();
@@ -17,7 +17,7 @@ class UserAddedEvent extends UserEvent {
     constructor(user) {
         super();
         this.User = user;
-        this.Type = EventType.UserAdded;
+        this.Type = UserEventType.UserAdded;
     }
 }
 exports.UserAddedEvent = UserAddedEvent;
