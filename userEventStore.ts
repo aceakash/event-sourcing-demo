@@ -1,6 +1,6 @@
 import {User} from './user'
 import { UserCommand, UserCommandType, AddUserCommand } from './userCommands';
-import { UserEvent, UserAddedEvent, UserEventType } from './userEvents';
+import { UserEvent, UserEventType } from './userEvents';
 
 
 export class UserEventStore {
@@ -32,7 +32,10 @@ export class UserEventStore {
             }
             
             const newUser = new User(addUserCmd.FullName, addUserCmd.Email)
-            const userAddedEvent = new UserAddedEvent(newUser)
+            console.log('line 35', newUser)
+            const userAddedEvent = new UserEvent("", "UserAdded", {
+                User: newUser
+            }) // todo remove hardcoding
             return [userAddedEvent]
         }
 
@@ -44,8 +47,8 @@ export class UserEventStore {
     Apply(users: Map<string, User>, event: UserEvent): Map<string, User> {
         let user = users.get(event.UserID)
         if (user === undefined) {
-            if (event.Type === UserEventType.UserAdded) {
-                users.set(event.UserID, (event as UserAddedEvent).User)
+            if (event.Type === "UserAdded") { // todo remove hardcoding
+                users.set(event.UserID, event.Data.User)
             }
             return users
         }

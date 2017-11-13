@@ -1,13 +1,15 @@
 import * as express from 'express'
 import * as morgan from 'morgan'
 import { format } from 'path';
-import * as bodyParser from 'body-parser';
+import {json, urlencoded} from 'body-parser';
 import {UserEventStore} from './userEventStore'
 import {JsonFileUserEventStoreRepo} from './jsonFileUserEventStoreRepo'
 import { AddUserCommand } from './userCommands';
+import { InMemoryRepo } from './inMemoryRepo';
 
-let jsonFileUserEventStoreRepo = new JsonFileUserEventStoreRepo('./user-events-log.json')
-let userEventStore = new UserEventStore(jsonFileUserEventStoreRepo)
+// let jsonFileUserEventStoreRepo = new JsonFileUserEventStoreRepo('./user-events-log.json')
+let inMemoryRepo = new InMemoryRepo()
+let userEventStore = new UserEventStore(inMemoryRepo)
 
 const app: express.Express = express()
 
@@ -15,6 +17,10 @@ app.use(morgan("combined"))
 
 app.get('/', (req, res) => {
     res.send('Hello 🤠')
+})
+
+app.get('/users', (req: express.Request, res: express.Response) => {
+    res.json(Array.from(userEventStore.Replay(inMemoryRepo.GetAllEvents()).keys()))
 })
 
 app.get('/users/:id', (req: express.Request, res: express.Response) => {
@@ -26,7 +32,7 @@ app.get('/users/:id', (req: express.Request, res: express.Response) => {
     res.json(user)
 })
 
-app.post('/users', bodyParser.json(),  (req: express.Request, res: express.Response) => {
+app.post('/users', json(), urlencoded(), (req: express.Request, res: express.Response) => {
     console.log('boo')
     // todo: validate input here
     let addUserCmd = new AddUserCommand()
@@ -34,6 +40,7 @@ app.post('/users', bodyParser.json(),  (req: express.Request, res: express.Respo
     addUserCmd.Email = req.body.email
 
     const events = userEventStore.Decide(addUserCmd)
+    console.log('line 37======', events)
     userEventStore.AddEvents(events)
     res.status(201).send()
 })

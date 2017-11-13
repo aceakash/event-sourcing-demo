@@ -23,6 +23,7 @@ export class JsonFileUserEventStoreRepo implements UserEventStoreRepo {
 
     GetAllEvents(): UserEvent[] {
         const allUserEvents = require(this.filePath) as UserEvent[]
+        console.log('json:allUserEvents', JSON.stringify(allUserEvents))
         return allUserEvents
     }
 }

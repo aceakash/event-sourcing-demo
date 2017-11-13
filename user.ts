@@ -35,7 +35,9 @@ export class User {
 
     constructor(fullName: string, email: string) {
         this.FullName = fullName
-        this.Email = email        
+        this.Email = email
+        this.Enabled = true
+        this.Id = newUUID()
     }
 }
 
