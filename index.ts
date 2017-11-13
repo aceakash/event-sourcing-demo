@@ -40,7 +40,6 @@ app.post('/users', json(), urlencoded(), (req: express.Request, res: express.Res
     addUserCmd.Email = req.body.email
 
     const events = userEventStore.Decide(addUserCmd)
-    console.log('line 37======', events)
     userEventStore.AddEvents(events)
     res.status(201).send()
 })

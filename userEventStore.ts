@@ -32,7 +32,6 @@ export class UserEventStore {
             }
             
             const newUser = new User(addUserCmd.FullName, addUserCmd.Email)
-            console.log('line 35', newUser)
             const userAddedEvent = new UserEvent("", "UserAdded", {
                 User: newUser
             }) // todo remove hardcoding

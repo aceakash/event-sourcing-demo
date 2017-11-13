@@ -10,7 +10,7 @@ export class InMemoryRepo implements UserEventStoreRepo {
     db:any
 
     constructor() {
-        this.FileName = "user-events-log.json"        
+        this.FileName = "./user-events-log.json"        
         let f = readFileSync(this.FileName)
         let g = f.toString()
         this.Events = JSON.parse(g) as UserEvent[]
